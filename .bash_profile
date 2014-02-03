@@ -196,6 +196,8 @@ function extract () {
   alias l='ls -lah'
 
   # Git 
+  alias gitx='open -a GitX .'
+  
   alias gds="git branch -d"
   alias gst="git status"
   alias gl="git pull"
