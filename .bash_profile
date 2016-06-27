@@ -3,8 +3,6 @@
 # Find all files/directories from current directory recursively down into all folders
 # USE: ff filename (ex: "ff *spec.rb" or "ff '*spec.rb'"). If can't find file, 
 # "cd .." into directory above current one, then try this again.
-bind "set completion-ignore-case on"
-
 function ff {
   find . -name $1
 }
@@ -53,10 +51,6 @@ function f {
   # These variables tell your shell where they can find certain
   # required libraries so other programs can reliably call the variable name
   # instead of a hardcoded path.
-  
-  #path for subl command
-  export PATH=$PATH:/Users/manleyhimself/bin
-
 
     # case insenitivity for tab  
     bind "set completion-ignore-case on"
@@ -89,6 +83,7 @@ function f {
     export EDITOR="subl -w"
 
   # Paths
+  export PATH=/usr/local/bin:$PATH
   # MYSQL=/usr/local/mysql/bin
   # export PATH=$PATH:$MYSQL
   # export DYLD_LIBRARY_PATH=/usr/local/mysql/lib:$DYLD_LIBRARY_PATH
@@ -155,6 +150,10 @@ function rapp {
   cd /Users/$USER/Code/rails-apps/$@
 }
 
+function ios {
+  cd /Users/$USER/Code/ios/$@
+}
+
 function mamps {
   cd /Applications/MAMP/htdocs/$@
 }
@@ -190,14 +189,32 @@ function extract () {
     fi
 }
 
+# open and run all the needed rails terminal tabs
+function rstart() {
+  ttab -G -d $PWD rails server
+  ttab -G -d $PWD redis-server
+  ttab -G -d $PWD sidekiq
+  ttab -G -d $PWD rails console
+}
+
+# copy or print ip address
+function ip {
+  if [ "$1" == "-c" ]; then
+    ifconfig en0 | grep 'inet ' | awk -F' ' '{print $2}' | tr -d '\n' | pbcopy
+    echo "Broadcast IP Address Copied to Clipboard"
+  else
+    ifconfig en0 | grep 'inet ' | awk -F' ' '{print $2}'
+  fi
+}
+
 # Aliases
 # =====================
   # LS
   alias l='ls -lah'
 
+  alias be="bundle exec"
+
   # Git 
-  alias gitx='open -a GitX .'
-  
   alias gds="git branch -d"
   alias gst="git status"
   alias gl="git pull"
@@ -223,10 +240,6 @@ function extract () {
 
   fi
 
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+  [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
-#UNCOMMENT FOR rbenv
-#export PATH="$HOME/.rbenv/bin:$PATH"
-
-#UCOMMENT FOR rvm
-#[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+  
